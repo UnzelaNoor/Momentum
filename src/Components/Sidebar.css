@@ -1,0 +1,75 @@
+/* components/Sidebar.css */
+
+/* Sidebar Styling */
+.sidebar {
+  width: 260px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  left: 0;
+  top: 0;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-purple);
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.sidebar-nav {
+  flex: 1;
+}
+
+.sidebar .nav-item {
+  transition: all 0.2s;
+  color: var(--text-dark);
+}
+
+.sidebar .nav-item:hover {
+  background-color: rgba(45, 42, 69, 0.1) !important;
+}
+
+.sidebar .nav-item.active {
+  background-color: var(--primary-purple) !important;
+  color: white !important;
+}
+
+.sidebar-footer {
+  border-top: 1px solid rgba(45, 42, 69, 0.1) !important;
+}
+
+.sidebar .nav-item {
+  color: #1A1A1A;
+}
+
+.sidebar .nav-item:hover {
+  color: #1A1A1A;
+  text-decoration: none;
+}
+
+.sidebar .nav-item.active {
+  color: white;
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 80px;
+    padding: 16px;
+  }
+
+  .sidebar h2,
+  .sidebar p,
+  .sidebar span {
+    display: none;
+  }
+}
