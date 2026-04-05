@@ -1,20 +1,21 @@
 import { Link } from 'react-router-dom';
+import CenteredFormContainer from '../Components/CenteredFormContainer';
 import './LandingPage.css';
 
-function LandingPage() {
+
+function LandingPage(){
     return (
-        <div className="landing-page">
-            <div className="landing-content">
-                <h1 className="landing-title">Momentum</h1>
+        <div className='bg'>
+            <CenteredFormContainer>
+                <h1 landing-logo>Momentum</h1>
                 <div className="landing-links">
                     <Link to="/login" className="landing-link">Login</Link>
                     <span className="landing-divider">|</span>
                     <Link to="/register" className="landing-link">Register</Link>
                 </div>
-            </div>
-            <p className="landing-tagline">THE DIGITAL SANCTUARY</p>
+            </CenteredFormContainer>
         </div>
-    );
+    )
 }
 
-export default LandingPage;
+export default LandingPage

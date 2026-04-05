@@ -1,17 +1,15 @@
-.landing-page {
+@import "../Styles/theme.css";
+
+.bg{
     min-height: 100vh;
-    background: radial-gradient(ellipse at 70% 60%, #3D3A65 0%, #2D2A45 60%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    background: radial-gradient(var(--primary-purple), var(ideas-color));
 }
 
 .landing-content {
     text-align: center;
 }
 
-.landing-title {
+.landing-logo {
     font-size: 5rem;
     font-weight: 700;
     color: #ffffff;
@@ -26,7 +24,7 @@
 }
 
 .landing-link {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--primary-purple);
     text-decoration: none;
     font-size: 0.95rem;
     letter-spacing: 0.05em;
@@ -34,17 +32,10 @@
 }
 
 .landing-link:hover {
-    color: #ffffff;
+    color: var(--light-purple);
 }
 
 .landing-divider {
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--light-purple);
 }
 
-.landing-tagline {
-    position: absolute;
-    bottom: 32px;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    color: rgba(255, 255, 255, 0.3);
-}
