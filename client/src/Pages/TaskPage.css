@@ -1,0 +1,356 @@
+/* src/Pages/Tasks.css */
+
+/* Page Layout */
+.tasks-page {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F5F4F8;
+}
+
+.main-content-area {
+  flex: 1;
+  margin-left: 260px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.tasks-container {
+  flex: 1;
+  background-color: #F5F4F8;
+}
+
+/* Hero Section */
+.tasks-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.tasks-hero h1 {
+  color: #1A1A1A;
+  margin-bottom: 12px;
+}
+
+.tasks-hero p {
+  font-size: 16px;
+  max-width: 600px;
+}
+
+/* Daily Velocity Card */
+.daily-velocity-card {
+  background: linear-gradient(135deg, #F5F4F8 0%, #E8E6F0 100%);
+  padding: 32px;
+  border-radius: 16px;
+  min-width: 280px;
+  text-align: center;
+}
+
+.velocity-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #6B6B6B;
+}
+
+.velocity-value {
+  color: #2D2A45;
+  line-height: 1;
+}
+
+.velocity-subtitle {
+  color: #6B6B6B;
+}
+
+.bg-primary-purple {
+  background-color: #2D2A45 !important;
+}
+
+/* Filter Tabs */
+.btn-group .btn {
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 20px;
+}
+
+.btn-group .btn:not(:last-child) {
+  margin-right: 8px;
+}
+
+.btn-dark {
+  background-color: #2D2A45 !important;
+  border-color: #2D2A45 !important;
+  color: white;
+}
+
+.btn-outline-secondary {
+  border-color: #E0E0E0;
+  color: #6B6B6B;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #F5F4F8;
+  border-color: #E0E0E0;
+  color: #2D2A45;
+}
+
+/* Priority Filter Buttons */
+.btn-sm.rounded-pill {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tasks List */
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.task-item {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+}
+
+.task-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.task-item.completed {
+  opacity: 0.6;
+}
+
+.task-item.completed .task-title {
+  text-decoration: line-through;
+  color: #6B6B6B;
+}
+
+.task-item .form-check {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+}
+
+.task-checkbox {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+.task-checkbox:checked {
+  background-color: #2D2A45;
+  border-color: #2D2A45;
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin-bottom: 6px;
+}
+
+.task-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: #6B6B6B;
+}
+
+.task-category {
+  color: #6B6B6B;
+}
+
+.task-time {
+  display: flex;
+  align-items: center;
+}
+
+/* Priority Badges */
+.priority-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.priority-high {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #DC3545;
+}
+
+.priority-med {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #FFC107;
+}
+
+.priority-low {
+  background-color: rgba(13, 110, 253, 0.1);
+  color: #0D6EFD;
+}
+
+/* Overdue Card */
+.overdue-card {
+  border-left: 4px solid #DC3545 !important;
+}
+
+.overdue-item {
+  padding: 12px;
+  background-color: rgba(220, 53, 69, 0.05);
+  border-radius: 8px;
+  border-left: 3px solid #DC3545;
+}
+
+/* Upcoming Items */
+.upcoming-item {
+  padding: 12px;
+  background-color: #F5F4F8;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.upcoming-item:hover {
+  background-color: #E8E6F0;
+}
+
+.upcoming-icon {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2D2A45;
+}
+
+/* Quote Card */
+.quote-card {
+  background: linear-gradient(135deg, #2D2A45 0%, #3D3A55 100%);
+  color: white;
+}
+
+.quote-card p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.quote-card .small {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.quote-card i {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Footer */
+.page-footer {
+  background-color: white;
+  border-top: 1px solid #E0E0E0;
+  margin-top: auto;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .tasks-hero {
+    flex-direction: column;
+  }
+
+  .daily-velocity-card {
+    width: 100%;
+  }
+}
+/* Dropdown styling */
+.dropdown-menu.show {
+  display: block;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  padding: 8px 0;
+}
+
+.dropdown-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background-color: #F5F4F8;
+}
+
+.btn.active {
+  background-color: #2D2A45 !important;
+  color: white !important;
+}
+
+.btn.active i {
+  color: white !important;
+} 
+/* Date Picker Styling */
+.form-control[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.form-control[type="date"]:focus {
+  border-color: #2D2A45;
+  box-shadow: 0 0 0 0.2rem rgba(45, 42, 69, 0.15);
+}
+
+/* Make calendar icon visible */
+.form-control[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.form-control[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Dropdown menu for date picker */
+.dropdown-menu.show {
+  display: block;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #E0E0E0;
+  border-radius: 12px;
+  padding: 8px;
+}
+@media (max-width: 768px) {
+  .main-content-area {
+    margin-left: 80px;
+  }
+
+  .tasks-hero h1 {
+    font-size: 2rem;
+  }
+}

@@ -69,7 +69,7 @@ const Sidebar = ({ activePage }) => {
           <i className="bi bi-question-circle fs-5"></i>
           <span>Help</span>
         </a>
-        <a href="/register" className="nav-item d-flex align-items-center gap-3 p-3 rounded text-decoration-none">
+        <a href="/logout" className="nav-item d-flex align-items-center gap-3 p-3 rounded text-decoration-none">
           <i className="bi bi-box-arrow-right fs-5"></i>
           <span>Logout</span>
         </a>
