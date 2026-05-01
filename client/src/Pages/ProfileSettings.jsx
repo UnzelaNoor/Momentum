@@ -1,7 +1,8 @@
 // src/Pages/ProfileSettings.jsx
 import React, { useState } from 'react';
 import Sidebar from '../Components/Sidebar';
-import Navbar from '../Components/Navbar';
+import Navbar from '../Components/Navbar'; 
+import Footer from '../Components/Footer';
 import '../Styles/theme.css';
 import './ProfileSettings.css';
 
@@ -271,27 +272,8 @@ const ProfileSettings = () => {
               )}
             </form>
           </div>
-        </div>
-
-        {/* Footer */}
-        <footer className="page-footer">
-          <div className="container py-4">
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                <strong className="d-block small">Momentum</strong>
-                <p className="mb-0 text-muted" style={{fontSize: '0.75rem'}}>
-                  © 2024 Momentum Productivity. Designed for Focus.
-                </p>
-              </div>
-              <div className="d-flex gap-4">
-                <a href="/privacy" className="text-muted text-decoration-none small">Privacy</a>
-                <a href="/terms" className="text-muted text-decoration-none small">Terms</a>
-                <a href="/support" className="text-muted text-decoration-none small">Support</a>
-                <a href="/api" className="text-muted text-decoration-none small">API</a>
-              </div>
-            </div>
-          </div>
-        </footer>
+        </div>  
+        <Footer />
       </div>
     </div>
   );

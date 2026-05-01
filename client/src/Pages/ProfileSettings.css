@@ -95,13 +95,6 @@
   box-shadow: 0 0 0 0.2rem rgba(45, 42, 69, 0.25) !important;
 }
 
-/* Footer */
-.page-footer {
-  background-color: white;
-  border-top: 1px solid #E0E0E0;
-  margin-top: auto;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .main-content-area {
