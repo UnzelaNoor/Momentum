@@ -1,0 +1,194 @@
+@import "../Styles/theme.css";
+
+.note-editor-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(45, 42, 69, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding-top: 70px;
+}
+
+.note-editor-container {
+    background: var(--light-bg);
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(45, 42, 69, 0.3);
+}
+
+/* Top Bar */
+.note-editor-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 24px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.note-editor-brand {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-gray);
+    letter-spacing: 0.1em;
+}
+
+.note-editor-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-editor-save {
+    background: transparent;
+    color: var(--primary-purple);
+    border: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.btn-editor-save:hover {
+    background: var(--light-purple);
+}
+
+.btn-editor-close {
+    background: var(--primary-purple);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-editor-close:hover {
+    background: #3D3A55;
+}
+
+/* Body */
+.note-editor-body {
+    padding: 28px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Title Input */
+.note-editor-title {
+    border: none;
+    background: transparent;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--primary-purple);
+    outline: none;
+    width: 100%;
+}
+
+.note-editor-title::placeholder {
+    color: var(--lavender);
+}
+
+/* Category Select */
+.note-editor-category {
+    border-radius: 20px;
+    padding: 4px 36px 4px 12px;
+    font-size: 0.85rem;
+    width: fit-content;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    color: var(--text-gray);
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.note-editor-category:focus {
+    border-color: var(--primary-purple);
+}
+
+/* Toolbar */
+.note-editor-toolbar {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 8px 10px;
+    background: var(--white);
+    border-radius: 10px 10px 0 0;
+    border: 1px solid var(--border-color);
+}
+
+.toolbar-btn {
+    background: none;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    transition: background 0.15s, color 0.15s;
+}
+
+.toolbar-btn:hover {
+    background: var(--light-purple);
+    color: var(--primary-purple);
+}
+
+.toolbar-btn.active {
+    background: var(--light-purple);
+    color: var(--primary-purple);
+}
+
+.toolbar-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border-color);
+    margin: 0 4px;
+}
+
+/* Editor Content Area */
+.note-editor-content {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    min-height: 220px;
+    padding: 14px;
+    color: var(--text-dark);
+    font-size: 1rem;
+    line-height: 1.6;
+    cursor: text;
+}
+
+.note-editor-content:focus-within {
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 0.2rem rgba(45, 42, 69, 0.15);
+}
+
+.note-editor-content .ProseMirror {
+    outline: none;
+    min-height: 200px;
+}
+
+.note-editor-content .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    color: var(--lavender);
+    pointer-events: none;
+    float: left;
+    height: 0;
+}

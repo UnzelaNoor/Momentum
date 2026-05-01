@@ -1,0 +1,41 @@
+@import "../Styles/theme.css";
+
+.bg{
+    min-height: 100vh;
+    background: radial-gradient(var(--primary-purple), var(ideas-color));
+}
+
+.landing-content {
+    text-align: center;
+}
+
+.landing-logo {
+    font-size: 5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 24px;
+}
+
+.landing-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.landing-link {
+    color: var(--primary-purple);
+    text-decoration: none;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+}
+
+.landing-link:hover {
+    color: var(--light-purple);
+}
+
+.landing-divider {
+    color: var(--light-purple);
+}
+

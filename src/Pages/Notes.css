@@ -1,0 +1,57 @@
+@import "../Styles/theme.css";
+
+.notes-page {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F5F4F8;
+}
+
+.main-content-area {
+  flex: 1;
+  margin-left: 260px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.new-note-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background-color: var(--primary-purple);
+    color: var(--white);
+    font-size: 2rem;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    border: none;
+    cursor: pointer;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(45, 42, 69, 0.3);
+}
+
+.new-note-btn:hover {
+    background: #3D3A55;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(45, 42, 69, 0.4);
+}
+
+.notes-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.notes-hero h1 {
+  color: #1A1A1A;
+  margin-bottom: 12px;
+}
+
+.notes-hero p {
+  font-size: 16px;
+  max-width: 600px;
+}

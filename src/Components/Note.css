@@ -1,0 +1,36 @@
+@import "../Styles/theme.css";
+
+:root {
+  --primary-purple: #2D2A45;
+  --light-purple: #E8E6F0;
+  --lavender: #B8B3D4;
+  --white: #FFFFFF;
+  --light-bg: #F5F4F8;
+  --text-dark: #1A1A1A;
+  --text-gray: #6B6B6B;
+  --border-color: #E0E0E0;
+  --work-color: #F59E0B;
+  --personal-color: #EC4899;
+  --ideas-color: #8B5CF6;
+}
+
+.select-category {
+    border-radius: 20px;
+    padding: 4px 36px 4px 12px;
+    font-size: 0.85em;
+    width: fit-content;
+    background-color: var(--white);
+    border-color: var(--primary-purple);
+    color: var(--text-gray);
+}
+
+.select-category option {
+    background-color: var(--white);
+    color: var(--text-gray);
+}
+
+/* Doesn't work */
+.select-category option:hover { 
+    background-color: var(--primary-purple) !important;
+    color: var(--white);
+}
