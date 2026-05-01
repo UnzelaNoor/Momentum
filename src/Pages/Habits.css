@@ -1,0 +1,239 @@
+/* src/Pages/Habits.css */
+
+/* Page Layout */
+.habits-page {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F5F4F8;
+}
+
+.main-content-area {
+  flex: 1;
+  margin-left: 260px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.habits-container {
+  flex: 1;
+  background-color: #F5F4F8;
+}
+
+/* Habit Cards */
+.habits-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.habit-card {
+  transition: all 0.2s;
+}
+
+.habit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Habit Icon */
+.habit-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #2D2A45 0%, #3D3A55 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+/* Streak Badge */
+.streak-badge {
+  text-align: center;
+  min-width: 80px;
+}
+
+.streak-number {
+  color: #2D2A45;
+  line-height: 1;
+}
+
+.streak-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #6B6B6B;
+  text-transform: uppercase;
+}
+
+/* Weekly Progress */
+.weekly-progress {
+  background-color: #F5F4F8;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.week-day {
+  flex: 1;
+  aspect-ratio: 1;
+  border: none;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 20px;
+  color: #E0E0E0;
+}
+
+.week-day:hover {
+  background-color: #E8E6F0;
+}
+
+.week-day.completed {
+  color: #2D2A45;
+  background-color: #E8E6F0;
+}
+
+.week-day i {
+  pointer-events: none;
+}
+
+/* Progress Bar */
+.bg-primary-purple {
+  background-color: #2D2A45 !important;
+}
+
+/* Challenge Badge */
+.challenge-badge {
+  background-color: rgba(255, 193, 7, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 3px solid #FFC107;
+}
+
+/* Last 30 Days Grid */
+.last-30-days {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #E0E0E0;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+}
+
+.day-dot {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.day-dot.completed {
+  background-color: #2D2A45;
+}
+
+.day-dot.incomplete {
+  background-color: #E8E6F0;
+}
+
+.day-dot:hover {
+  transform: scale(1.1);
+}
+
+/* Mastery Card */
+.mastery-card {
+  background: linear-gradient(135deg, #F5F4F8 0%, #E8E6F0 100%);
+}
+
+/* Harmony Chart */
+.harmony-chart {
+  padding: 20px 0;
+}
+
+/* Quote Card */
+.quote-card {
+  background: linear-gradient(135deg, #2D2A45 0%, #3D3A55 100%);
+  color: white;
+}
+
+.quote-card p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.quote-card i {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Insight Items */
+.insight-item {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.insight-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Badge Styles */
+.badge.bg-primary-purple {
+  background-color: #2D2A45 !important;
+}
+
+/* Tracking Type Toggle */
+.btn-group .btn {
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 20px;
+}
+
+.btn-group .btn:not(:last-child) {
+  margin-right: 8px;
+}
+
+.btn-outline-secondary.active {
+  background-color: #2D2A45;
+  border-color: #2D2A45;
+  color: white;
+}
+
+/* Footer */
+.page-footer {
+  background-color: white;
+  border-top: 1px solid #E0E0E0;
+  margin-top: auto;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .days-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content-area {
+    margin-left: 80px;
+  }
+
+  .days-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .habit-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}
