@@ -14,7 +14,7 @@ function Login() {
     const userRef = useRef();
     const errRef = useRef();
 
-    // States for username
+    // States for email
     const [username, setUser] = useState('');
     const [usernameFocus, setUsernameFocus] = useState(false)
     // States for pwd
@@ -29,10 +29,26 @@ function Login() {
     }, [])
 
     const navigate = useNavigate();
-    const handleSubmit= (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(username, pwd)
-        navigate('/dashboard', { state: { username: username } });
+        try {
+            const response = await fetch('http://localhost:5000/api/users/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: username, pwd })
+            })
+            const data = await response.json()
+            if (!response.ok) {
+                setErrMsg(data.message)
+                errRef.current.focus()
+                return
+            }
+            localStorage.setItem('token', data.token)
+            navigate('/dashboard')
+        } catch (err) {
+            setErrMsg('Login failed. Try again.')
+            errRef.current.focus()
+        }
     }
 
     return (
@@ -41,10 +57,10 @@ function Login() {
             <h1 className="txt-medium-purple">Login</h1>
             <Form onSubmit={handleSubmit}> {/* Since the form just has one button, we do not need to put a onClick event  on that button */}
                 <Form.Group className="mb-3" controlId="loginUsername">
-                    <Form.Label>Username</Form.Label>
+                    <Form.Label>Email</Form.Label>
                     <Form.Control 
-                        type="text" 
-                        placeholder="abc" 
+                        type="email" 
+                        placeholder="example@email.com" 
                         ref = {userRef}
                         required
                         onChange = {e => setUser(e.target.value)}
@@ -66,7 +82,7 @@ function Login() {
                     />
                 </Form.Group>
                
-                <Button  disabled={!username || !pwd  ? true : false} className='btn-primary-custom' type="submit">Login</Button>
+                <Button disabled={!username || !pwd ? true : false} className='btn-primary-custom' type="submit">Login</Button>
             </Form>
             <br/>
             <p>
@@ -78,4 +94,3 @@ function Login() {
 }
 
 export default Login;
-

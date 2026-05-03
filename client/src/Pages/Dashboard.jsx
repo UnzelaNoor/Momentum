@@ -1,4 +1,5 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Sidebar from '../Components/Sidebar';
 import Navbar from '../Components/Navbar';
 import '../Styles/theme.css';
@@ -6,19 +7,41 @@ import './Dashboard.css';
 
 const Dashboard = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const username = location.state?.username || 'User';
+    const [username, setUsername] = useState('User');
+    const [notes, setNotes] = useState([]);
+    const [todayTasks, setTodayTasks] = useState([]);
+    const [stats, setStats] = useState({ avgTaskCompletion: 0, longestStreak: 0, tasksCreatedThisWeek: 0 });
 
-    const recentNotes = [
-        { id: 1, category: 'Work', title: 'Scrum Meeting', preview: 'Discussed scalability options.', lastEdited: 'Oct 24' },
-        { id: 2, category: 'Study', title: 'Book List: Q4 Reads', preview: '1. Deep Work 2. Designing for Emotion 3. The...', date: 'Oct 22' },
-    ];
+    const token = localStorage.getItem('token');
+    const authHeader = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    };
 
-    const todayTasks = [
-        { id: 1, title: 'Refine Design System Documentation', category: 'Project Sanctuary', time: '2:00 PM', priority: 'HIGH', completed: false },
-        { id: 2, title: 'Weekly Performance Review', category: 'Analytics', time: '4:30 PM', priority: 'MED', completed: false },
-        { id: 3, title: 'Morning Deep Work Session', category: 'Productivity', time: 'Completed', priority: 'LOW', completed: true },
-    ];
+    useEffect(() => {
+        const fetchData = async () => {
+            // Fetch user profile
+            const userRes = await fetch('http://localhost:5000/api/users/profile', { headers: authHeader });
+            const userData = await userRes.json();
+            setUsername(userData.data.name);
+
+            // Fetch notes (max 2)
+            const notesRes = await fetch('http://localhost:5000/api/notes', { headers: authHeader });
+            const notesData = await notesRes.json();
+            setNotes(notesData.slice(0, 2));
+
+            // Fetch tasks (max 3)
+            const tasksRes = await fetch('http://localhost:5000/api/tasks', { headers: authHeader });
+            const tasksData = await tasksRes.json();
+            setTodayTasks(Array.isArray(tasksData) ? tasksData.slice(0, 3) : []);
+
+            // Fetch user stats
+            const statsRes = await fetch('http://localhost:5000/api/users/stats', { headers: authHeader });
+            const statsData = await statsRes.json();
+            if (statsData.success) setStats(statsData.data);
+        };
+        fetchData();
+    }, []);
 
     return (
         <div className="dashboard-page">
@@ -83,16 +106,18 @@ const Dashboard = () => {
                                         <span className="small text-muted text-uppercase">{todayTasks.filter(t => !t.completed).length} Priority Tasks</span>
                                     </div>
                                     <div className="d-flex flex-column gap-3">
-                                        {todayTasks.map(task => (
-                                            <div key={task.id} className={`task-row ${task.completed ? 'completed' : ''}`}>
+                                        {todayTasks.length > 0 ? todayTasks.map(task => (
+                                            <div key={task._id} className={`task-row ${task.completed ? 'completed' : ''}`}>
                                                 <div className={`task-dot ${task.completed ? 'done' : ''}`}></div>
                                                 <div className="flex-grow-1">
                                                     <div className="task-row-title">{task.title}</div>
                                                     <div className="task-row-meta">{task.category} · {task.time}</div>
                                                 </div>
-                                                <span className={`priority-badge priority-${task.priority.toLowerCase()}`}>{task.priority}</span>
+                                                <span className={`priority-badge priority-${task.priority?.toLowerCase()}`}>{task.priority}</span>
                                             </div>
-                                        ))}
+                                        )) : (
+                                            <p className="text-muted small">No tasks for today.</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -105,15 +130,15 @@ const Dashboard = () => {
                                         <span className="small text-muted" style={{cursor:'pointer'}} onClick={() => navigate('/notes')}>View All</span>
                                     </div>
                                     <div className="row g-3">
-                                        {recentNotes.map(note => (
-                                            <div key={note.id} className="col-md-6">
+                                        {notes.map(note => (
+                                            <div key={note._id} className="col-md-6">
                                                 <div className="note-preview-card">
                                                     <div className="d-flex justify-content-between mb-2">
-                                                        <span className="note-preview-category">{note.category}</span>
-                                                        <span className="note-preview-date">{note.date}</span>
+                                                        <span className="note-preview-category">{note.category || 'No Category'}</span>
+                                                        <span className="note-preview-date">{note.lastEdited}</span>
                                                     </div>
                                                     <div className="note-preview-title">{note.title}</div>
-                                                    <div className="note-preview-text">{note.preview}</div>
+                                                    <div className="note-preview-text" dangerouslySetInnerHTML={{ __html: note.text }} />
                                                 </div>
                                             </div>
                                         ))}
@@ -128,7 +153,7 @@ const Dashboard = () => {
                             <div className="card border-0 shadow-sm mb-4 weekly-insight-card">
                                 <div className="card-body p-4">
                                     <h5 className="fw-semibold mb-1">Weekly Insight</h5>
-                                    <p className="small text-muted mb-3">Your completion rate is up by 14% compared to last week.</p>
+                                    <p className="small text-muted mb-3">Avg task completion: {stats.avgTaskCompletion}% · Longest streak: {stats.longestStreak} days</p>
                                     <div className="insight-bars">
                                         {['M','T','W','T','F','S','S'].map((day, i) => (
                                             <div key={i} className="insight-bar-col">

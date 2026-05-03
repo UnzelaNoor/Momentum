@@ -8,7 +8,7 @@ function NotesList({notes, onDelete, onSave, onEdit}) {
     <Container className='bg-light-custom'>
       <Row xs={1} sm={2} md={3} lg={4} className="align-items-start g-3">
         {notes.map((note) => (
-          <Col key={note.id}>
+          <Col key={note._id}>
             <Note {...note} onDelete={onDelete} onSave={onSave} onEdit={onEdit} />
           </Col>
         ))}
