@@ -80,14 +80,30 @@ function Register() {
     }, [username, pwd, matchPwd])
 
     const navigate = useNavigate();
-    const handleSubmit= (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(username, pwd)
-        setUsername('')
-        setEmail('')
-        setPwd('')
-        setMatchPwd('')
-        navigate('/dashboard', { state: { username: username } });
+        try {
+            const response = await fetch('http://localhost:5000/api/users/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, pwd })
+            })
+            const data = await response.json()
+            if (!response.ok) {
+                setErrMsg(data.message)
+                errRef.current.focus()
+                return
+            }
+            localStorage.setItem('token', data.token)
+            setUsername('')
+            setEmail('')
+            setPwd('')
+            setMatchPwd('')
+            navigate('/dashboard')
+        } catch (err) {
+            setErrMsg('Registration failed. Try again.')
+            errRef.current.focus()
+        }
     }
 
     return (
@@ -162,7 +178,6 @@ function Register() {
                     Allowed special characters: <span>!</span> <span>@</span> <span>#</span> <span>$</span> <span>%</span>
                 </p>
 
-
                 <Form.Group className="mb-3" controlId="registerMatchPwd">
                     <Form.Label>
                         Comfirm Password
@@ -183,7 +198,7 @@ function Register() {
                     Must match the first password input field.
                 </p>
                 
-                <Button  disabled={!validUsername || !validPwd || !validMatch  || !validEmail ? true : false} className='btn-primary-custom'  type="submit">Register</Button>
+                <Button disabled={!validUsername || !validPwd || !validMatch || !validEmail ? true : false} className='btn-primary-custom' type="submit">Register</Button>
             </Form>
             <br/>
             <p>

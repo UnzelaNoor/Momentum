@@ -5,12 +5,12 @@ import "./Note.css"
 import { useState} from 'react';
 
 
-function Note({id, title, text, lastEdited, category, onDelete, onSave, onEdit}) {
-    const handleDeleteNote = () => onDelete(id)
+function Note({_id, title, text, lastEdited, category, onDelete, onSave, onEdit}) {
+    const handleDeleteNote = () => onDelete(_id)
 
     const [selectedCategory, setSelectedCategory] = useState(category || '');
     return (
-        <Card onClick={() => onEdit({id, title, text, lastEdited, category})} style={{cursor: 'pointer'}}>
+        <Card onClick={() => onEdit({_id, title, text, lastEdited, category})} style={{cursor: 'pointer'}}>
             <Card.Header className='bg-light-purple'>             
                 <Form.Select 
                     className="form-control select-category" 
@@ -33,7 +33,7 @@ function Note({id, title, text, lastEdited, category, onDelete, onSave, onEdit})
                 <small>{lastEdited}</small>
                 <button 
                     className="btn btn-sm btn-outline-danger rounded-circle p-2"
-                    onClick={(e) => { e.stopPropagation(); handleDeleteNote(id); }}
+                    onClick={(e) => { e.stopPropagation(); handleDeleteNote(); }}
                     title="Delete habit"
                     style={{width: '36px', height: '36px'}}
                 >

@@ -64,10 +64,10 @@ function NoteEditor({ note, onSave, onClose }) {
                         onChange={(e) => setCategory(e.target.value)}
                     >
                         <option value="">No Category</option>
-                        <option value="Work">Work</option>
-                        <option value="Home">Home</option>
-                        <option value="Study">Study</option>
-                        <option value="Health">Health</option>
+                        <option value="work">Work</option>
+                        <option value="home">Home</option>
+                        <option value="study">Study</option>
+                        <option value="health">Health</option>
                     </select>
 
                     {/* Toolbar */}
