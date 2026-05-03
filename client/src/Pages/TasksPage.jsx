@@ -4,7 +4,7 @@ import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 import { getTasks, createTask, deleteTask as deleteTaskAPI, toggleTask } from '../services/taskService';
 import '../Styles/theme.css';
-import './TasksPage.css';
+import './TaskPage.css';
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
