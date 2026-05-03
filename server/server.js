@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+dotenv.config();
 const cors = require('cors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
@@ -29,6 +30,7 @@ app.use(
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
 app.use('/api/habits', require('./routes/habitRoutes'));
+app.use('/api/notes', require('./routes/noteRoutes'));
 
 // Your partner will add this when they create auth:
 // app.use('/api/auth', require('./routes/authRoutes'));
