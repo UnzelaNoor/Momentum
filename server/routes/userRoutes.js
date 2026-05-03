@@ -7,6 +7,8 @@ const {
   updateNotificationPreferences,
   deleteUserAccount,
   getUserStats,
+  registerUser,
+  loginUser
 } = require('../controllers/userController');
 const { protect } = require('../middleware/authMiddleware');
 router.get('/profile', protect, getUserProfile);
@@ -15,5 +17,7 @@ router.put('/password', protect, updateUserPassword);
 router.put('/notifications', protect, updateNotificationPreferences);
 router.delete('/account', protect, deleteUserAccount);
 router.get('/stats', protect, getUserStats);
+router.post('/', registerUser)
+router.post('/login', loginUser)
 
 module.exports = router;
