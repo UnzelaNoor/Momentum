@@ -1,75 +1,22 @@
-// src/Pages/Habits.jsx
-import React, { useState } from 'react';
+// client/src/Pages/Habits.jsx
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../Components/Sidebar';
-import Navbar from '../Components/Navbar'; 
+import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
+import { 
+  getHabits, 
+  createHabit, 
+  deleteHabit as deleteHabitAPI, 
+  updateHabitProgress 
+} from '../services/habitService';
 import '../Styles/theme.css';
 import './Habits.css';
 
 const Habits = () => {
-  const [trackingMode, setTrackingMode] = useState('binary'); // 'binary' or 'percentage'
-  
-  const [habits, setHabits] = useState([
-    {
-      id: 1,
-      name: 'Morning Meditation',
-      goal: '30 Days',
-      frequency: 'Daily',
-      type: 'binary',
-      currentStreak: 14,
-      last30Days: generateLast30Days(14), // Array of 30 booleans
-      weeklyProgress: {
-        Mon: true,
-        Tue: true,
-        Wed: true,
-        Thu: true,
-        Fri: true,
-        Sat: false,
-        Sun: false
-      }
-    },
-    {
-      id: 2,
-      name: 'Deep Reading',
-      goal: 'Infinite',
-      frequency: 'Weekly (5x)',
-      type: 'percentage',
-      currentStreak: 8,
-      completionRate: 68,
-      last30Days: generateLast30Days(8),
-      weeklyProgress: {
-        Mon: true,
-        Tue: false,
-        Wed: true,
-        Thu: true,
-        Fri: true,
-        Sat: true,
-        Sun: false
-      }
-    },
-    {
-      id: 3,
-      name: 'Morning Run',
-      goal: '5km per session',
-      frequency: 'Daily',
-      type: 'binary',
-      currentStreak: 0,
-      last30Days: generateLast30Days(0),
-      weeklyProgress: {
-        Mon: false,
-        Tue: false,
-        Wed: false,
-        Thu: false,
-        Fri: false,
-        Sat: false,
-        Sun: false
-      },
-      challenge: '60 Day Challenge',
-      challengeType: 'Daily',
-      challengeGoal: 'Binary'
-    }
-  ]);
-
+  const [habits, setHabits] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [trackingMode, setTrackingMode] = useState('binary');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newHabit, setNewHabit] = useState({
     name: '',
@@ -78,107 +25,84 @@ const Habits = () => {
     type: 'binary'
   });
 
-  // Helper function to generate last 30 days based on streak
-  function generateLast30Days(streak) {
-    const days = [];
-    for (let i = 0; i < 30; i++) {
-      // Last 'streak' days are true, rest are false
-      days.push(i >= (30 - streak));
-    }
-    return days;
-  }
+  // Fetch habits on component mount
+  useEffect(() => {
+    fetchHabits();
+  }, []);
 
-  // Calculate overall statistics
+  const fetchHabits = async () => {
+    try {
+      setLoading(true);
+      const response = await getHabits();
+      setHabits(response.data);
+      setError(null);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to fetch habits');
+      console.error('Error fetching habits:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateHabit = async (e) => {
+    e.preventDefault();
+    if (!newHabit.name.trim()) {
+      alert('Please enter a habit name');
+      return;
+    }
+
+    try {
+      const response = await createHabit(newHabit);
+      setHabits([...habits, response.data]);
+      setNewHabit({ name: '', goal: '', frequency: 'Daily', type: 'binary' });
+      setShowCreateModal(false);
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to create habit');
+      console.error('Error creating habit:', err);
+    }
+  };
+
+  const handleDeleteHabit = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this habit?')) return;
+
+    try {
+      await deleteHabitAPI(id);
+      setHabits(habits.filter(h => h._id !== id));
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete habit');
+      console.error('Error deleting habit:', err);
+    }
+  };
+
+  const toggleHabitDay = async (habitId, day) => {
+    const habit = habits.find(h => h._id === habitId);
+    if (!habit) return;
+
+    const newValue = !habit.weeklyProgress[day];
+
+    try {
+      const response = await updateHabitProgress(habitId, {
+        day: day,
+        value: newValue
+      });
+      
+      setHabits(habits.map(h => 
+        h._id === habitId ? response.data : h
+      ));
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to update habit progress');
+      console.error('Error updating habit:', err);
+    }
+  };
+
   const filteredHabits = habits.filter(h => h.type === trackingMode);
   const totalHabits = habits.length;
   const activeHabits = habits.filter(h => h.currentStreak > 0).length;
-  const longestStreak = Math.max(...habits.map(h => h.currentStreak), 0);
+  const longestStreak = Math.max(...habits.map(h => h.longestStreak), 0);
   const weeklyMastery = Math.round((habits.reduce((acc, h) => {
     const completed = Object.values(h.weeklyProgress).filter(Boolean).length;
     return acc + (completed / 7);
   }, 0) / (habits.length || 1)) * 100);
-
-  const toggleHabitDay = (habitId, day) => {
-    setHabits(habits.map(habit => {
-      if (habit.id === habitId) {
-        const newWeeklyProgress = {
-          ...habit.weeklyProgress,
-          [day]: !habit.weeklyProgress[day]
-        };
-        
-        // Update last30Days - mark today as completed/incomplete
-        const newLast30Days = [...habit.last30Days];
-        newLast30Days[29] = newWeeklyProgress[getCurrentDay()]; // Update today
-        
-        // Recalculate streak
-        const newStreak = calculateStreak(newLast30Days);
-        
-        return {
-          ...habit,
-          weeklyProgress: newWeeklyProgress,
-          last30Days: newLast30Days,
-          currentStreak: newStreak
-        };
-      }
-      return habit;
-    }));
-  };
-
-  const getCurrentDay = () => {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    return days[new Date().getDay()];
-  };
-
-  const calculateStreak = (last30Days) => {
-    let streak = 0;
-    // Count from the end (most recent day) backwards
-    for (let i = last30Days.length - 1; i >= 0; i--) {
-      if (last30Days[i]) {
-        streak++;
-      } else {
-        break;
-      }
-    }
-    return streak;
-  };
-
-  const deleteHabit = (habitId) => {
-    if (window.confirm('Are you sure you want to delete this habit? This action cannot be undone.')) {
-      setHabits(habits.filter(h => h.id !== habitId));
-    }
-  };
-
-  const handleCreateHabit = (e) => {
-    e.preventDefault();
-    if (newHabit.name.trim()) {
-      const habit = {
-        id: Date.now(),
-        name: newHabit.name,
-        goal: newHabit.goal || 'No goal set',
-        frequency: newHabit.frequency,
-        type: newHabit.type,
-        currentStreak: 0,
-        last30Days: generateLast30Days(0),
-        weeklyProgress: {
-          Mon: false,
-          Tue: false,
-          Wed: false,
-          Thu: false,
-          Fri: false,
-          Sat: false,
-          Sun: false
-        }
-      };
-      
-      if (newHabit.type === 'percentage') {
-        habit.completionRate = 0;
-      }
-      
-      setHabits([...habits, habit]);
-      setNewHabit({ name: '', goal: '', frequency: 'Daily', type: 'binary' });
-      setShowCreateModal(false);
-    }
-  };
 
   const renderLast30Days = (habit) => {
     return habit.last30Days.map((isCompleted, index) => (
@@ -190,17 +114,44 @@ const Habits = () => {
     ));
   };
 
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center min-vh-100">
+        <div className="spinner-border" style={{color: '#2D2A45'}} role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="habits-page">
+        <Sidebar activePage="habits" />
+        <div className="main-content-area">
+          <Navbar activePage="habits" />
+          <div className="d-flex justify-content-center align-items-center flex-grow-1">
+            <div className="alert alert-danger">
+              <i className="bi bi-exclamation-triangle me-2"></i>
+              {error}
+              <button className="btn btn-sm btn-primary-custom ms-3" onClick={fetchHabits}>
+                Retry
+              </button>
+            </div>
+          </div>
+          <Footer />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="habits-page">
-      {/* Reusable Sidebar */}
       <Sidebar activePage="habits" />
 
-      {/* Main Content Area */}
       <div className="main-content-area">
-        {/* Reusable Navbar */}
         <Navbar activePage="habits" />
 
-        {/* Habits Content */}
         <div className="habits-container">
           <div className="container-fluid px-4 py-5">
             {/* Header */}
@@ -217,7 +168,7 @@ const Habits = () => {
             </div>
 
             <div className="row">
-              {/* Left Column - Habit Tracking */}
+              {/* Left Column */}
               <div className="col-lg-8">
                 {/* Tracking Type Toggle */}
                 <div className="mb-4">
@@ -241,7 +192,7 @@ const Habits = () => {
                 <div className="habits-list">
                   {filteredHabits.length > 0 ? (
                     filteredHabits.map(habit => (
-                      <div key={habit.id} className="card border-0 shadow-sm mb-4 habit-card">
+                      <div key={habit._id} className="card border-0 shadow-sm mb-4 habit-card">
                         <div className="card-body p-4">
                           <div className="d-flex justify-content-between align-items-start mb-3">
                             <div className="d-flex align-items-start gap-3">
@@ -269,7 +220,7 @@ const Habits = () => {
                               </div>
                               <button 
                                 className="btn btn-sm btn-outline-danger rounded-circle p-2"
-                                onClick={() => deleteHabit(habit.id)}
+                                onClick={() => handleDeleteHabit(habit._id)}
                                 title="Delete habit"
                                 style={{width: '36px', height: '36px'}}
                               >
@@ -292,7 +243,7 @@ const Habits = () => {
                                 <button
                                   key={day}
                                   className={`week-day ${habit.weeklyProgress[day] ? 'completed' : ''}`}
-                                  onClick={() => toggleHabitDay(habit.id, day)}
+                                  onClick={() => toggleHabitDay(habit._id, day)}
                                 >
                                   <i className={`bi ${habit.weeklyProgress[day] ? 'bi-check-circle-fill' : 'bi-circle'}`}></i>
                                 </button>
@@ -300,7 +251,7 @@ const Habits = () => {
                             </div>
                           </div>
 
-                          {/* Percentage Progress Bar (for percentage type) */}
+                          {/* Percentage Progress Bar */}
                           {habit.type === 'percentage' && (
                             <div className="mb-3">
                               <div className="d-flex justify-content-between small mb-1">
@@ -317,7 +268,7 @@ const Habits = () => {
                             </div>
                           )}
 
-                          {/* Challenge Badge (if exists) */}
+                          {/* Challenge Badge */}
                           {habit.challenge && (
                             <div className="challenge-badge mb-3">
                               <div className="d-flex align-items-center gap-2">
@@ -352,7 +303,7 @@ const Habits = () => {
                 </div>
               </div>
 
-              {/* Right Column - Statistics & Insights */}
+              {/* Right Column */}
               <div className="col-lg-4">
                 {/* Weekly Mastery Card */}
                 <div className="card border-0 shadow-sm mb-4 mastery-card">
@@ -437,7 +388,7 @@ const Habits = () => {
           </div>
         </div>
 
-      <Footer />
+        <Footer />
       </div>
 
       {/* Create Habit Modal */}
