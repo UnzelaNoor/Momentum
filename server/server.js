@@ -3,7 +3,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 const cors = require('cors');
 const connectDB = require('./config/db');
-const errorHandler = require('./middleware/errorHandler');
+const errorHandler = require('./middleware/errorHandler'); 
+const { startCronJobs } = require('./services/cronJobs');
 
 // Load environment variables
 dotenv.config();
@@ -32,20 +33,21 @@ app.use('/api/tasks', require('./routes/taskRoutes'));
 app.use('/api/habits', require('./routes/habitRoutes'));
 app.use('/api/notes', require('./routes/noteRoutes'));
 
-// Your partner will add this when they create auth:
-// app.use('/api/auth', require('./routes/authRoutes'));
+
 
 // Test route
 app.get('/', (req, res) => {
   res.json({ message: 'Momentum API is running...' });
 });
 
-// Error handler middleware (must be last)
+// Error handler middleware 
 app.use(errorHandler);
 
 // Start server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-});
+  console.log(` Server running in ${process.env.NODE_ENV} mode on port ${PORT}`); 
+   startCronJobs();
+}); 
+
